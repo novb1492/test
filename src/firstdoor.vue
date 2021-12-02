@@ -11,14 +11,6 @@
   width: 400px;
   height: 400px;
 }
-
-.button-group {
-  margin: 10px 0px;
-}
-
-button {
-  margin: 0 3px;
-}
 </style>
 <script>
 export default {
