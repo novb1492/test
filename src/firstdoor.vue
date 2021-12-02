@@ -1,10 +1,5 @@
 <template>
-    <div id="map">
-         
-
-    </div>
-    
-
+    <div id="map"> </div>
 </template>
 <style scoped>
 #map {
@@ -21,16 +16,13 @@ export default {
     };
   },
     created() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
       const script = document.createElement("script");
       /* global kakao */
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
         "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=95292156744ab5c8586460536149fb32";
       document.head.appendChild(script);
-    }
+    
   },
    methods: {
     initMap() {
