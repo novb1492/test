@@ -2,6 +2,7 @@
     <div id="mapPage">
         <div id="map"></div>
         <input type="text" @keyup="search()" id="name">
+        <input type="button" @click="getHomeAddress()" value="받을 주소 불러오기">
     </div>
    
     
@@ -27,9 +28,41 @@ export default {
       script.src =
         "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=95292156744ab5c8586460536149fb32&libraries=services";
       document.head.appendChild(script);
-    
   },
    methods: {
+    getHomeAddress(){
+      var num=2;
+      var address=null;
+      if(num==1){
+        address='서울특별시 동작구 흑석동 서달로 2길';
+      }else{
+        address='서울특별시 동작구 흑석동 서달로 2길 29';
+      }
+      var geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(address, (result, status)=> {
+
+    // 정상적으로 검색이 완료됐으면 
+     if (status === kakao.maps.services.Status.OK) {
+
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+            map: this.map,
+            position: coords
+        });
+
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+        });
+        infowindow.open(this.map, marker);
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        this.map.setCenter(coords);
+    } 
+    });    
+    },
     initMap() {
       const container = document.getElementById("map");
       const options = {
