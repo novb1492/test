@@ -127,9 +127,8 @@ export default {
         infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
         infowindow.open(this.map, marker);
          // 마커에 클릭이벤트를 등록합니다
-        kakao.maps.event.addListener(marker, 'click', function() {
-            
-        
+        kakao.maps.event.addListener(marker, 'click',()=>{
+          alert('bb');
         });
     } 
   
