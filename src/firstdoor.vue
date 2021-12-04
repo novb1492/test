@@ -19,15 +19,16 @@ export default {
     data() {
     return {
       map: null,
+      destinationFlag:true,
     };
   },
-    created() {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=95292156744ab5c8586460536149fb32&libraries=services";
-      document.head.appendChild(script);
+  created() {
+    const script = document.createElement("script");
+    /* global kakao */
+    script.onload = () => kakao.maps.load(this.initMap);
+    script.src ="//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=95292156744ab5c8586460536149fb32&libraries=services";
+    document.head.appendChild(script);
+     
   },
    methods: {
     getHomeAddress(){
@@ -40,28 +41,28 @@ export default {
       }
       var geocoder = new kakao.maps.services.Geocoder();
       geocoder.addressSearch(address, (result, status)=> {
+        // 정상적으로 검색이 완료됐으면 
+        if (status === kakao.maps.services.Status.OK) {
 
-    // 정상적으로 검색이 완료됐으면 
-     if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var marker = new kakao.maps.Marker({
+                map: this.map,
+                position: coords
+            });
 
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-            map: this.map,
-            position: coords
-        });
+            // 인포윈도우로 장소에 대한 설명을 표시합니다
+            var infowindow = new kakao.maps.InfoWindow({
+                content: '<div style="width:150px;text-align:center;padding:6px 0;">배달 받으실 주소</div>'
+            });
+            infowindow.open(this.map, marker);
 
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">배달 받으실 주소</div>'
-        });
-        infowindow.open(this.map, marker);
-
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        this.map.setCenter(coords);
-    } 
-    });    
+            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+            this.map.setCenter(coords);
+            this.destinationFlag=false;
+        } 
+      });    
     },
     initMap() {
       const container = document.getElementById("map");
@@ -73,7 +74,12 @@ export default {
     },
     search(){
         var n=document.getElementById('name').value;
-        console.log(n);
+        if(this.destinationFlag){
+          alert('배달 받으실 주소를 먼저 선택해주세요');
+          n="";
+          return;
+        }
+        console.log("검색한 마트 키워드"+n);
         // 장소 검색 객체를 생성합니다
         var ps = new kakao.maps.services.Places();
         // 키워드로 장소를 검색합니다
