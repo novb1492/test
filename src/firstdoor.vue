@@ -25,7 +25,8 @@ export default {
       destinationX:0,
       destinationY:0,
       maketX:0,
-      maketY:0
+      maketY:0,
+      maketArray:[]
     };
   },
   created() {
@@ -126,9 +127,17 @@ export default {
         // 마커위에 상호명 표시
         infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
         infowindow.open(this.map, marker);
+        //배열에 상점별 위도경도 저장합니다
+        //var obj = { name : 'jaehee', x : place.x,y:place.y };
+        var x=place.x;
+        var y=place.y;
          // 마커에 클릭이벤트를 등록합니다
         kakao.maps.event.addListener(marker, 'click',()=>{
-          alert('bb');
+          console.log(x+" "+this.destinationX);
+          axios.get("http://localhost:8080/getMeter?x="+this.destinationX+"&y="+this.destinationY+"&mx="+x+"&my="+y,{withCredentials: true}).then(result=>{
+            console.log(result);
+          });
+          //alert('bb');
         });
     } 
   
