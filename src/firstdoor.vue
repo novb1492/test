@@ -131,11 +131,17 @@ export default {
         //var obj = { name : 'jaehee', x : place.x,y:place.y };
         var x=place.x;
         var y=place.y;
+        var address=place.address_name;
+        var name=place.place_name;
          // 마커에 클릭이벤트를 등록합니다
         kakao.maps.event.addListener(marker, 'click',()=>{
           console.log(x+" "+this.destinationX);
-          axios.get("http://localhost:8080/getMeter?x="+this.destinationX+"&y="+this.destinationY+"&mx="+x+"&my="+y,{withCredentials: true}).then(result=>{
+          axios.get("http://localhost:8080/getMeter?x="+this.destinationX+"&y="+this.destinationY+"&mx="+x+"&my="+y+"&ma="+address+"&mn="+name,{withCredentials: true}).then(result=>{
             console.log(result);
+            if(result.data>0.6){
+              alert('이 상점의 최대 배달거리를 초과합니다');
+              return;
+            }
           });
           //alert('bb');
         });
