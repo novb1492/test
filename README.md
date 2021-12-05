@@ -43,3 +43,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 물론 네비게이션 처럼 계산하는게 아닌  
 반영 nkm이내 가 필요하기 때문에 저렇게 계산한다  
 
+기본적 테스트는 여기까지 본프젝트 생성하자  
+
+
