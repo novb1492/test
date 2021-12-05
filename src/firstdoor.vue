@@ -103,11 +103,13 @@ export default {
                 var bounds = new kakao.maps.LatLngBounds();
                 for (var i=0; i<result.length; i++) {
                     console.log(result[i]);
-                    if(result[i].category_name.includes('가정,생활 > 슈퍼마켓')||result[i].category_name.includes('가정,생활 > 식품판매 >')){
+                    var category_name=result[i].category_name;
+                    var category_group_code=result[i].category_group_code;
+                    //MT1=대형마트,CS2=편의점, 일반 마트 슈퍼는 카테고리가 비어있음 그래서 카테코리 name으로 검출해야함
+                    if(category_group_code=='CS2'||category_group_code=='MT1'||category_name.includes('가정,생활 > 생활용품점')||category_name.includes('가정,생활 > 슈퍼마켓')||category_name.includes('가정,생활 > 식품판매 >')){
                       this.displayMarker(result[i]);    
                       bounds.extend(new kakao.maps.LatLng(result[i].y, result[i].x));
                     }
-
                 }       
 
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
